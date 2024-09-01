@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clothify</title>
     <link rel="stylesheet" href="./style.css">
+    <style>
+        body {width: 100%;}
+        canvas {display: none;}
+    </style>
+  
 </head>
 <body>
     <div class="topnav">
@@ -62,6 +67,46 @@
         <button><a href="./signup.html">Sign up</a></button>
       </div>
     <section>
+       
+        <script>
+            var video, canvas, msg;
+            var load = function () {
+                video  = document.getElementById('video');
+                canvas = document.getElementById('canvas');
+                msg    = document.getElementById('error');
+                if( navigator.getUserMedia ) {
+                    video.onclick = function () {
+                        var context = canvas.getContext("2d");
+                        context.drawImage(video, 0, 0, 240, 320);
+                        var image = {"demo" : {
+                            "type"  : "device",
+                            "image" : canvas.toDataURL("image/png")
+                        }};
+                    };
+    
+                    var success = function ( stream ) {
+                        video.src = stream;
+                    };
+    
+                    var error = function ( err ) {
+                        msg.innerHTML = "Error: " + err.code;
+                    };
+    
+                    navigator.getUserMedia('video', success, error);
+    
+                } else {
+                    msg.innerHTML = "Native web camera not supported :(";
+                }
+    
+            };
+    
+            window.addEventListener('DOMContentLoaded', load, false);
+        </script>
+   
+        <video  id="video" width="100" height="150" autoplay> </video>
+        <p><a href="./camera.html">Click on the video to send a snapshot to the receiving screen</p></a>
+        <canvas id="canvas" width="100" height="150"> </canvas>
+      
     
 </body>
 </html>
